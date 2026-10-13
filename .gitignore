@@ -41,3 +41,9 @@ yarn-error.log*
 next-env.d.ts
 
 !.env.example
+
+# netlify
+.netlify
+
+# local agent / editor config
+.claude/
