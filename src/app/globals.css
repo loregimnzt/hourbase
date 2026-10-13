@@ -1,26 +1,138 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Theme tokens. Dark is the default; light is opt-in via Settings. */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #11121a;
+  --surface: #1c1d29;
+  --elevated: #252636;
+  --hover: #2b2c3e;
+  --line: #2c2d40;
+  --line-strong: #3b3c54;
+  --accent: #8b79c6;
+  --accent-hover: #a495e0;
+  --accent-fg: #11121a;
+  --accent-soft: rgb(139 121 198 / 0.16);
+  --accent-text: #b8aaee;
+  --fg: #f5f3ff;
+  --muted: #aaa9ba;
+  --subtle: #8c8ba0;
+  --success: #79d8b4;
+  --success-soft: rgb(121 216 180 / 0.14);
+  --warning: #e8b86b;
+  --warning-soft: rgb(232 184 107 / 0.14);
+  --danger: #ef8a8a;
+  --danger-soft: rgb(239 138 138 / 0.14);
+  --chart-grid: #2a2b3d;
+  --shadow: 0 1px 0 rgb(255 255 255 / 0.02) inset, 0 12px 32px -16px rgb(0 0 0 / 0.6);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f5f4fa;
+  --surface: #ffffff;
+  --elevated: #f0eef7;
+  --hover: #ebe8f4;
+  --line: #e3e1ed;
+  --line-strong: #cfcce0;
+  --accent: #6d5ab3;
+  --accent-hover: #5c4a9e;
+  --accent-fg: #ffffff;
+  --accent-soft: rgb(109 90 179 / 0.12);
+  --accent-text: #5c4a9e;
+  --fg: #17161f;
+  --muted: #5b5a6e;
+  --subtle: #6c6b7f;
+  --success: #1d7f5b;
+  --success-soft: rgb(29 127 91 / 0.12);
+  --warning: #9a6211;
+  --warning-soft: rgb(154 98 17 / 0.12);
+  --danger: #bf3b3b;
+  --danger-soft: rgb(191 59 59 / 0.1);
+  --chart-grid: #ebe9f2;
+  --shadow: 0 1px 2px rgb(23 22 31 / 0.04), 0 12px 32px -18px rgb(23 22 31 / 0.18);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --color-hover: var(--hover);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --shadow-card: var(--shadow);
+  --animate-fade-in: fade-in 160ms ease-out;
+  --animate-slide-up: slide-up 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 }
 
+html {
+  background: var(--bg);
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible, consistent keyboard focus. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Native date/time pickers match the theme. */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+  cursor: pointer;
+}
+:root[data-theme="light"] input[type="date"]::-webkit-calendar-picker-indicator,
+:root[data-theme="light"] input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Recharts: remove default focus rectangles on SVG wrappers. */
+.recharts-wrapper:focus,
+.recharts-surface:focus {
+  outline: none;
 }
